@@ -16,33 +16,44 @@ class ViewController: UIViewController {
     //task: when press pause or reset, invalidate the timer
     
     
-    //var seconds: Int = {
-        // have it update seconds in label
-        //return 0
-    //}
+    var seconds: Int = 0 {
+        didSet {
+            secondsLabel.text = "\(seconds)"
+        }
+    }
 
     var timer: Timer? = nil
     
     func startTimer() {
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { (timer) in
             print("tick")
-            //seconds += 1
+            self.seconds += 1
         })
+    }
+    
+    func stopTimer() {
+        timer?.invalidate()
+        timer = nil
     }
     
     @IBOutlet weak var secondsLabel: UILabel!
     
     @IBAction func startButton() {
         print("start")
-        startTimer()
+        if (timer == nil) {
+            startTimer()
+        }
     }
     
     @IBAction func pauseButton() {
         print("pause")
+        stopTimer()
     }
     
     @IBAction func resetButton() {
         print("reset")
+        stopTimer()
+        seconds = 0
     }
     
     override func viewDidLoad() {
